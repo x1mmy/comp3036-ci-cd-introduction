@@ -8,6 +8,8 @@ on:
 
 jobs:
   build-and-test:
+    env: 
+      COURSE: "COMP3036"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,3 +29,23 @@ jobs:
         run: pnpm test
       - name: Build Project 🏗️
         run: pnpm build
+      - name: Test Application
+        id: npm1
+        uses: WesternSydneyUniversity/autograding-command-grader@v3
+        continue-on-error: true
+        with:
+          working-directory: .
+          test-name: Exercise Test
+          courseId: ${{env.COURSE}}
+          sectionId: exercise-ci-cd-in-ci-cd-and-devops
+          command: pnpm test
+          timeout: 10
+          max-score: 1
+      - name: Autograding Reporter
+        uses: education/autograding-grading-reporter@v1
+        env:
+          NPM1_RESULTS: "${{steps.npm1.outputs.result}}"
+        with:
+          runners: npm1
+
+
