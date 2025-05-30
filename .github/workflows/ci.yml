@@ -9,7 +9,7 @@ on:
 jobs:
   build-and-test:
     env: 
-      COURSE: "COMP3036"
+      COURSE: "full-stack-development-comp3036"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
